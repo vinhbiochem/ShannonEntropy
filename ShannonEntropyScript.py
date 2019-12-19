@@ -100,7 +100,7 @@ def SeqDFmaker(file):
     Counter = 0
     Record = False
     SeqDF = pd.DataFrame()
-    for line in open('FullSeqAlign.fa'):
+    for line in open('FullSeq-11-14-Align.fa'):
         if(Record == True):
             SeqDF.at[Counter,'Title'] = Title
             SeqDF.at[Counter,'Seq'] = line
@@ -202,7 +202,8 @@ def SecondSetGroupConversion(df):
 
 AlphaAnswer = input("Hello! This is a Shannon Entropy script. Would you like to consider dashes in your script or not? (y/n)")
 GroupAnswer = input("This script can also calculate SE based on amino acid groups. If you are not interested, enter n. If you are interested, the groupings are separated based on glycine/proline. Would you like these considered as hydrophobic -enter 1- or would you like them considered in their own group -enter 2-  ")
-SequenceDF = SeqDFmaker('FullSeqAlign.fa')
+SequenceDF = SeqDFmaker('FullSeq-11-14-Align.fa')
+OutputFile = input('Name of output?')
 if (AlphaAnswer == 'y'):
     UAlpha = DashAlpha()
 if(AlphaAnswer == 'n'):
@@ -230,3 +231,4 @@ for i in range(0,SeqLength):
     ResultSheet.at[TrueI,'FirstSequenceInput'] = FirstSequence[TrueI]
     ResultSheet.at[TrueI,'EntropyValue'] = SEValue
 
+ResultSheet.to_csv(OutputFile)
