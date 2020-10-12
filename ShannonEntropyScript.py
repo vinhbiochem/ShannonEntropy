@@ -98,17 +98,21 @@ def PosDFmaker(df,position):
 
 def SeqDFmaker(file):
     Counter = 0
-    Record = False
+    First = True
     SeqDF = pd.DataFrame()
-    for line in open('FullSeq-11-14-Align.fa'):
-        if(Record == True):
+    for line in open(file):
+        if('>' not in line):
+            Seq += line.strip()
+        if('>' in line and First == False):
             SeqDF.at[Counter,'Title'] = Title
-            SeqDF.at[Counter,'Seq'] = line
-            Record = False
+            SeqDF.at[Counter,'Seq'] = Seq
             Counter += 1
-        if ('>' in line):
             Title = line[1:].strip()
-            Record = True
+            Seq = ''
+        if ('>' in line and First == True):
+            Title = line[1:].strip()
+            Seq = ''
+            First = False
     return SeqDF
     
 
@@ -202,7 +206,8 @@ def SecondSetGroupConversion(df):
 
 AlphaAnswer = input("Hello! This is a Shannon Entropy script. Would you like to consider dashes in your script or not? (y/n)")
 GroupAnswer = input("This script can also calculate SE based on amino acid groups. If you are not interested, enter n. If you are interested, the groupings are separated based on glycine/proline. Would you like these considered as hydrophobic -enter 1- or would you like them considered in their own group -enter 2-  ")
-SequenceDF = SeqDFmaker('FullSeq-11-14-Align.fa')
+FileName = input('Please put in the name of the fasta file with sequences. Make sure you are in the correct directory')
+SequenceDF = SeqDFmaker(FileName)
 OutputFile = input('Name of output?')
 if (AlphaAnswer == 'y'):
     UAlpha = DashAlpha()
